@@ -1,39 +1,20 @@
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-import re
+from fastapi import FastAPI, Depends
+from backend_impactex.db import get_conn
+from backend_impactex.auth import router as auth_router
+from backend_impactex.auth_verify import get_current_user_id
+from backend_impactex.database1 import engine
+from backend_impactex.models import Base
 
-app = FastAPI()
+Base.metadata.create_all(bind=engine)
 
-# Allow React frontend
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+app = FastAPI(title="ImpactX Backend")
 
-class LoginRequest(BaseModel):
-    email: str
-    password: str
+app.include_router(auth_router)
 
-def valid_password(password: str):
-    return (
-        len(password) >= 8
-        and re.search(r"[A-Za-z]", password)
-        and re.search(r"[0-9]", password)
-    )
+@app.get("/")
+def root():
+    return {"status": "Backend running 🚀"}
 
-@app.post("/login")
-def login(data: LoginRequest):
-    if not data.email:
-        raise HTTPException(status_code=400, detail="Email required")
-
-    if not valid_password(data.password):
-        raise HTTPException(
-            status_code=400,
-            detail="Password must contain letters & numbers"
-        )
-
-    return {"success": True}
-
+@app.get("/protected")
+def protected(user_id: str = Depends(get_current_user_id)):
+    return {"user_id": user_id}
