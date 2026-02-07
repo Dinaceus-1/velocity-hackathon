@@ -1,11 +1,4 @@
 
-export interface Campaign {
-  id: string;
-  name: string;
-  status: 'active' | 'funding' | 'completed';
-  goal: string;
-}
-
 export interface ImpactProject {
   id: string;
   projectCode: string;
@@ -17,7 +10,6 @@ export interface ImpactProject {
   description: string;
   totalOutcomes: number;
   fundingTarget: string;
-  campaigns?: Campaign[];
 }
 
 export interface PortfolioItem {

@@ -1,5 +1,5 @@
 {
-  "name": "copy-of-impact-exchange",
+  "name": "copy-of-copy-of-impact-exchange",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,9 +11,7 @@
   "dependencies": {
     "recharts": "^3.7.0",
     "react-dom": "^19.2.3",
-    "react": "^19.2.3",
-    "@google/genai": "^1.38.0",
-    "jspdf": "^2.5.1"
+    "react": "^19.2.3"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
